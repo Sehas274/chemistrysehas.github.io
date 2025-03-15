@@ -5,6 +5,7 @@ import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
 import { sampleMessages, Message, generateReply } from '@/utils/sampleData';
 import { Sparkles } from 'lucide-react';
+import '../styles/chatbot.css';
 
 const Index: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(sampleMessages);
@@ -20,9 +21,11 @@ const Index: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  
+
   // Handle sending new message
   const handleSendMessage = (text: string) => {
+    if (!text.trim()) return;
+    
     // Add user message
     const userMessage: Message = {
       id: messages.length + 1,
@@ -62,7 +65,7 @@ const Index: React.FC = () => {
       
       <div 
         ref={messageContainerRef}
-        className="message-container flex-1 overflow-y-auto"
+        className="message-container"
       >
         {messages.length > 0 ? (
           messages.map((message, index) => (
