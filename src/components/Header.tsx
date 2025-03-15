@@ -1,9 +1,27 @@
 
 import React from 'react';
-import { ChevronLeft, MoreVertical } from 'lucide-react';
+import { ChevronLeft, MoreVertical, Trash2 } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { toast } from 'sonner';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onClearChat: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onClearChat }) => {
+  const handleClearChat = () => {
+    onClearChat();
+    toast.success('සියලුම පණිවිඩ මකා දමන ලදී', {
+      description: 'අලුත් සංවාදයක් ආරම්භ කරන්න',
+    });
+  };
+
   return (
     <div className="bg-background/80 backdrop-blur-md border-b border-border/10 py-3 px-4 flex items-center justify-between sticky top-0 z-10">
       <div className="flex items-center gap-2">
@@ -29,9 +47,19 @@ const Header: React.FC = () => {
         </div>
       </div>
       
-      <button className="p-1 rounded-full hover:bg-secondary/80 transition-colors">
-        <MoreVertical size={24} />
-      </button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="p-1 rounded-full hover:bg-secondary/80 transition-colors">
+            <MoreVertical size={24} />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleClearChat} className="text-destructive focus:text-destructive flex items-center gap-2">
+            <Trash2 size={16} />
+            <span>සියලුම පණිවිඩ මකන්න</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

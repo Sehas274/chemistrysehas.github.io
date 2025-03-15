@@ -50,21 +50,37 @@ const Index: React.FC = () => {
     }, 1500);
   };
   
+  // Clear all chat messages
+  const handleClearChat = () => {
+    setMessages([]);
+    setIsTyping(false);
+  };
+  
   return (
     <div className="chat-container">
-      <Header />
+      <Header onClearChat={handleClearChat} />
       
       <div 
         ref={messageContainerRef}
         className="message-container flex-1 overflow-y-auto"
       >
-        {messages.map((message, index) => (
-          <ChatMessage 
-            key={message.id} 
-            message={message} 
-            index={index}
-          />
-        ))}
+        {messages.length > 0 ? (
+          messages.map((message, index) => (
+            <ChatMessage 
+              key={message.id} 
+              message={message} 
+              index={index}
+            />
+          ))
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center p-6">
+              <p className="text-muted-foreground mb-2">
+                අලුත් සංවාදයක් ආරම්භ කරන්න
+              </p>
+            </div>
+          </div>
+        )}
         
         {isTyping && (
           <div className="message message-bot max-w-[60%] animate-pulse">
