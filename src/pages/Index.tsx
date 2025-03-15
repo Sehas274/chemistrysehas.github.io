@@ -1,10 +1,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import Header from '@/components/Header';
 import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
 import { sampleMessages, Message, generateReply } from '@/utils/sampleData';
-import { Sparkles } from 'lucide-react';
+import { MoreVertical, ArrowLeft, Phone, Video } from 'lucide-react';
 import '../styles/chatbot.css';
 
 const Index: React.FC = () => {
@@ -61,7 +60,20 @@ const Index: React.FC = () => {
   
   return (
     <div className="chat-container">
-      <Header onClearChat={handleClearChat} />
+      {/* WhatsApp-style Header */}
+      <div className="whatsapp-header">
+        <ArrowLeft size={24} />
+        <div className="whatsapp-avatar">රස</div>
+        <div className="flex-1">
+          <div className="font-bold">රසායන AI උපකාරක</div>
+          <div className="text-xs opacity-80">Online</div>
+        </div>
+        <div className="flex gap-4">
+          <Phone size={20} />
+          <Video size={20} />
+          <MoreVertical size={20} onClick={handleClearChat} />
+        </div>
+      </div>
       
       <div 
         ref={messageContainerRef}
@@ -77,9 +89,12 @@ const Index: React.FC = () => {
           ))
         ) : (
           <div className="flex items-center justify-center h-full">
-            <div className="text-center p-6">
-              <p className="text-muted-foreground mb-2">
+            <div className="text-center p-6 bg-white/70 backdrop-blur-sm rounded-lg">
+              <p className="text-muted-foreground mb-2 font-sinhala">
                 අලුත් සංවාදයක් ආරම්භ කරන්න
+              </p>
+              <p className="text-xs text-muted-foreground">
+                මෙම WhatsApp-style රසායන විද්‍යා AIට ඔබේ ප්‍රශ්න යොමු කරන්න
               </p>
             </div>
           </div>
@@ -98,18 +113,7 @@ const Index: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
       
-      <div className="px-4 py-2 text-xs text-center text-muted-foreground flex items-center justify-center gap-1">
-        <Sparkles size={12} className="animate-bounce-light" />
-        <span>
-          රසායන විද්‍යා උපකාරක AI අත්හදා බලන්න
-        </span>
-        <Sparkles size={12} className="animate-bounce-light" style={{ animationDelay: '1s' }} />
-      </div>
-      
-      <div className="sticky bottom-0 px-4 pb-4 pt-2 bg-background/80 backdrop-blur-md">
-        <div className="text-xs text-center mb-2 text-muted-foreground">
-          "කාබනික රසායන විද්‍යාවේ ව්‍යුහයන්" වැනි ප්‍රශ්න අසන්න
-        </div>
+      <div className="sticky bottom-0 px-4 pb-4 pt-2 whatsapp-footer">
         <ChatInput onSendMessage={handleSendMessage} />
       </div>
     </div>

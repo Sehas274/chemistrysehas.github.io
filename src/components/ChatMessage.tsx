@@ -1,7 +1,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Message } from '../utils/sampleData';
-import { formatDistanceToNow } from 'date-fns';
+import { format } from 'date-fns';
+import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ChatMessageProps {
@@ -56,8 +57,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, index }) => {
         className="font-sinhala leading-relaxed whitespace-pre-line chem-formulas"
         dangerouslySetInnerHTML={{ __html: formatChemistry(message.text) }}
       />
-      <div className="text-xs mt-2 opacity-60">
-        {formatDistanceToNow(message.timestamp, { addSuffix: true })}
+      <div className="text-[10px] mt-1 opacity-60 flex items-center justify-end gap-1">
+        {format(message.timestamp, 'HH:mm')}
+        {message.isUser && (
+          <span className="text-[#00a884]">
+            <Check size={14} className="-mr-1" />
+            <Check size={14} />
+          </span>
+        )}
       </div>
     </div>
   );

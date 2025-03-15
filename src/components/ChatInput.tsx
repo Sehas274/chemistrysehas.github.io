@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { SendHorizonal, Mic } from 'lucide-react';
+import { Mic, SendHorizonal, Plus, Smile } from 'lucide-react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -77,7 +77,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
             <Button
               key={index}
               variant="secondary"
-              className="text-xs py-1 px-2 h-auto"
+              className="text-xs py-1 px-2 h-auto bg-white"
               onClick={() => selectSuggestion(suggestion)}
             >
               {suggestion}
@@ -86,11 +86,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
         </div>
       )}
       
-      <form onSubmit={handleSubmit} className="input-container flex items-end gap-2">
+      <form onSubmit={handleSubmit} className="whatsapp-input-container">
+        <Button 
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="h-10 w-10 text-gray-500"
+        >
+          <Plus size={20} />
+        </Button>
+        
         <textarea
           ref={inputRef}
-          className="glass-input resize-none w-full rounded-xl p-3 max-h-32 min-h-[46px]"
-          placeholder="ඔබේ ප්‍රශ්නය මෙහි ලියන්න... (කාබනික ව්‍යුහ ගැන විමසන්න)"
+          className="resize-none w-full bg-transparent p-2 focus:outline-none text-sm max-h-32 min-h-[46px] font-sinhala"
+          placeholder="ඔබේ ප්‍රශ්නය මෙහි ලියන්න..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
@@ -104,23 +113,34 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
         
         <Button 
           type="button"
-          variant="outline"
+          variant="ghost"
           size="icon"
-          className={`rounded-full transition-all duration-300 glass-effect h-[46px] w-[46px] ${
-            isRecording ? 'bg-red-500/20 text-red-500' : ''
-          }`}
-          onClick={toggleRecording}
+          className="h-10 w-10 text-gray-500"
         >
-          <Mic className={isRecording ? 'animate-pulse' : ''} size={20} />
+          <Smile size={20} />
         </Button>
         
-        <Button 
-          type="submit" 
-          className="rounded-full bg-primary glass-effect h-[46px] w-[46px] flex items-center justify-center"
-          disabled={!message.trim()}
-        >
-          <SendHorizonal size={20} />
-        </Button>
+        {message.trim() ? (
+          <Button 
+            type="submit" 
+            className="rounded-full bg-[#00a884] h-10 w-10 flex items-center justify-center text-white"
+            disabled={!message.trim()}
+          >
+            <SendHorizonal size={20} />
+          </Button>
+        ) : (
+          <Button 
+            type="button"
+            variant="ghost"
+            size="icon"
+            className={`rounded-full h-10 w-10 transition-all duration-300 ${
+              isRecording ? 'bg-red-500/20 text-red-500' : 'text-[#00a884]'
+            }`}
+            onClick={toggleRecording}
+          >
+            <Mic className={isRecording ? 'animate-pulse' : ''} size={20} />
+          </Button>
+        )}
       </form>
     </>
   );
