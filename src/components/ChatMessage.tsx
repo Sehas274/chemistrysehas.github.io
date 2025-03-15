@@ -28,6 +28,18 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, index }) => {
     }
   }, [index, message.isUser]);
 
+  // Format chemistry formulas with subscripts and superscripts
+  const formatChemistry = (text: string) => {
+    // Replace subscript numbers after chemical symbols
+    const withSubscripts = text.replace(/([A-Za-z])(\d+)/g, '$1<sub>$2</sub>');
+    
+    // Replace superscript charges like Na+, Cl-
+    const withCharges = withSubscripts.replace(/([A-Za-z])<sub>(\d+)<\/sub>(\+|\-)/g, '$1<sub>$2</sub><sup>$3</sup>');
+    const finalText = withCharges.replace(/([A-Za-z])(\+|\-)/g, '$1<sup>$2</sup>');
+    
+    return finalText;
+  };
+
   return (
     <div
       ref={messageRef}
@@ -40,9 +52,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, index }) => {
         animationDelay: `${index * 50}ms`
       }}
     >
-      <div className="font-sinhala leading-relaxed whitespace-pre-line">
-        {message.text}
-      </div>
+      <div 
+        className="font-sinhala leading-relaxed whitespace-pre-line chem-formulas"
+        dangerouslySetInnerHTML={{ __html: formatChemistry(message.text) }}
+      />
       <div className="text-xs mt-2 opacity-60">
         {formatDistanceToNow(message.timestamp, { addSuffix: true })}
       </div>

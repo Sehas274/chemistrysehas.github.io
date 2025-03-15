@@ -87,7 +87,12 @@ const Index: React.FC = () => {
         <Sparkles size={12} className="animate-bounce-light" style={{ animationDelay: '1s' }} />
       </div>
       
-      <ChatInput onSendMessage={handleSendMessage} />
+      <div className="sticky bottom-0 px-4 pb-4 pt-2 bg-background/80 backdrop-blur-md">
+        <div className="text-xs text-center mb-2 text-muted-foreground">
+          "කාබනික රසායන විද්‍යාවේ ව්‍යුහයන්" වැනි ප්‍රශ්න අසන්න
+        </div>
+        <ChatInput onSendMessage={handleSendMessage} />
+      </div>
     </div>
   );
 };
