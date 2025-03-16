@@ -4,6 +4,7 @@ import { Message } from '../utils/sampleData';
 import { format } from 'date-fns';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ChatMessageProps {
   message: Message;
@@ -12,6 +13,7 @@ interface ChatMessageProps {
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, index }) => {
   const messageRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     const element = messageRef.current;
@@ -41,11 +43,22 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, index }) => {
     return finalText;
   };
 
+  // Apply haptic feedback for messages (only works on iOS with support)
+  useEffect(() => {
+    if (isMobile && message.isUser === false && navigator && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate(50);
+      } catch (e) {
+        // Ignore vibration errors
+      }
+    }
+  }, [isMobile, message.isUser]);
+
   return (
     <div
       ref={messageRef}
       className={cn(
-        'message transition-all duration-300 ease-out',
+        'message transition-all duration-300 ease-out select-none touch-manipulation',
         message.isUser ? 'message-user' : 'message-bot'
       )}
       style={{ 
@@ -54,7 +67,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, index }) => {
       }}
     >
       <div 
-        className="font-sinhala leading-relaxed whitespace-pre-line chem-formulas"
+        className="font-sinhala leading-relaxed whitespace-pre-line chem-formulas text-[15px]"
         dangerouslySetInnerHTML={{ __html: formatChemistry(message.text) }}
       />
       <div className="text-[10px] mt-1 opacity-60 flex items-center justify-end gap-1">

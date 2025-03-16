@@ -2,15 +2,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
+import Header from '@/components/Header';
 import { sampleMessages, Message, generateReply } from '@/utils/sampleData';
-import { MoreVertical, ArrowLeft, Phone, Video } from 'lucide-react';
 import '../styles/chatbot.css';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(sampleMessages);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messageContainerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
   // Scroll to bottom of messages
   const scrollToBottom = () => {
@@ -59,21 +61,8 @@ const Index: React.FC = () => {
   };
   
   return (
-    <div className="chat-container">
-      {/* WhatsApp-style Header */}
-      <div className="whatsapp-header">
-        <ArrowLeft size={24} />
-        <div className="whatsapp-avatar">රස</div>
-        <div className="flex-1">
-          <div className="font-bold">රසායන AI උපකාරක</div>
-          <div className="text-xs opacity-80">Online</div>
-        </div>
-        <div className="flex gap-4">
-          <Phone size={20} />
-          <Video size={20} />
-          <MoreVertical size={20} onClick={handleClearChat} />
-        </div>
-      </div>
+    <div className={`chat-container ${isMobile ? 'mobile-app' : ''}`}>
+      <Header onClearChat={handleClearChat} />
       
       <div 
         ref={messageContainerRef}
@@ -94,7 +83,7 @@ const Index: React.FC = () => {
                 අලුත් සංවාදයක් ආරම්භ කරන්න
               </p>
               <p className="text-xs text-muted-foreground">
-                මෙම WhatsApp-style රසායන විද්‍යා AIට ඔබේ ප්‍රශ්න යොමු කරන්න
+                මෙම රසායන විද්‍යා AIට ඔබේ ප්‍රශ්න යොමු කරන්න
               </p>
             </div>
           </div>
@@ -113,7 +102,7 @@ const Index: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
       
-      <div className="sticky bottom-0 px-4 pb-4 pt-2 whatsapp-footer">
+      <div className="sticky bottom-0 px-4 pb-4 pt-2 chat-input-container">
         <ChatInput onSendMessage={handleSendMessage} />
       </div>
     </div>
